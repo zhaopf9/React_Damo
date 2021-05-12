@@ -25,7 +25,10 @@ export default function index(props:any) {
           <NavLink to="/about1">About1</NavLink>
         </Menu.Item>
         <Menu.Item key="4" icon={<ReadOutlined />}>
-          <NavLink to="/practice">Practice</NavLink>
+          <NavLink to="/practice">Practices</NavLink>
+        </Menu.Item>
+        <Menu.Item key="5" icon={<ReadOutlined />}>
+          <NavLink to="/userManager">userManager</NavLink>
         </Menu.Item>
       </Menu>
     </Sider>

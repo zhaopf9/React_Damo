@@ -49,6 +49,10 @@ const routes: Route[] =[
                         },
                       ]
                   },
+                  { 
+                    path: '/userManager', 
+                    component: '@/pages/userManager/index' ,
+                  },
              ]
     },
 ]

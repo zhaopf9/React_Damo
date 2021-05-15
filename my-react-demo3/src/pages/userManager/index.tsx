@@ -7,22 +7,22 @@ import { UserEdit, UserEditObject } from './userEdit';
 const { Option } = Select;
 
 export default () => {
-  const [dataSource, setDataSource] = React.useState<any[]>([]);
-  const [pagination, setPagination] = React.useState({
+  const [dataSource, setDataSource] = React.useState<any[]>([]);        //数据集合
+  const [pagination, setPagination] = React.useState({                  //分页器
     current: 1,
     total: 1,
     pageSize: 10,
     showSizeChanger: true,
     pageSizeOptions: ['10', '50', '200', '500'],
   });
-  const [currentEditObject, setCurrentEditObject] = React.useState<UserEditObject>({
+  const [currentEditObject, setCurrentEditObject] = React.useState<UserEditObject>({           //新增
     isModalVisible: false,
   });
 
 
   const [formObject] = Form.useForm();
 
-  const loadDataSource = async (
+  const loadDataSource = async (                                              //将返回的列表对象数组数据转换为json格式提交给表格
     userParams: any,
     pageValue: any,
     pageSizeValue: any,
@@ -55,7 +55,7 @@ export default () => {
       setDataSource(data);
     }
   };
-
+  
   const searchOnClick = async () => {
     await loadDataSource(formObject.getFieldsValue(), 1, pagination.pageSize);
   };
@@ -65,15 +65,15 @@ export default () => {
   }, []);
 
 
-  const pageOnChange = async (page: any) => {
+  const pageOnChange = async (page: any) => {                       //分页、排序、筛选变化时触发
     await loadDataSource(formObject.getFieldsValue(), page.current, page.pageSize);
   };
 
-  const userEditOnClose = async () => {
+  const userEditOnClose = async () => {                               //修改或新建用户后跟新列表
     await loadDataSource(formObject.getFieldsValue(), pagination.current, pagination.pageSize);
   };
 
-  const deleteOnClick = async (user: any) => {
+  const deleteOnClick = async (user: any) => {                    //删除用户
     const result: any = await request.get('/api/removeUserById?id=' + user.id);
     if (result.success) {
       message.success('用户删除成功');

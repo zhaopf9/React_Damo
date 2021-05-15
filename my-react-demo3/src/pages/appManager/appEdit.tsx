@@ -2,58 +2,76 @@ import * as React from 'react';
 import { Form, Input, Modal, Select, message } from 'antd';
 import request from '@/http';
 
-const { Option } = Select;
-
-interface UserEditObject {
+interface AppEditObject {                     //定义app修改时需要的数据及类型接口
   isModalVisible: boolean,
   id?: number,
-  userName?: string,
-  userNo?: string,
+  appName?: string,
+  appNo?: string,
   description?: string,
-  sex?: any,
+  indexUrl?: string,
 }
 
-const UserEdit = (props: { editObject: UserEditObject; onClose: any }) => {
+const  AppEdit = (props: { editObject: AppEditObject; onClose: any }) => {
   const { editObject, onClose } = props;
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [isModalVisible, setIsModalVisible] = React.useState(false);   //默认隐藏Modal
   const [formObject] = Form.useForm();
 
-  const modelOnOk = async () => {
+  const modelOnOk = async () => {                           //点击确认添加或修改应用
     const data = await formObject.validateFields();
-    const result: any = await request.post('/api/addOrUpdateUser', {
-      ...data,
-    });
-    if (result.success) {
-      message.success('用户添加成功');
-      if (onClose) {
-        onClose();
-      }                     //跟新列表
-      setIsModalVisible(false);
+    console.log(data)
+    if(flag)
+    {
+      console.log(editObject.id)
+      const result: any = await request.post('/api/addOrUpdateApp?appid='+editObject.id, {
+        ...data,
+      });
+      if (result.success) {
+        message.success('应用修改成功');
+        if (onClose) {
+          onClose();
+        }
+        setIsModalVisible(false);
+      }
+    }
+    else
+    {
+      const result: any = await request.post('/api/addOrUpdateApp', {
+        ...data,
+        id: editObject.id,
+      });
+      if (result.success) {
+        message.success('应用添加成功');
+        if (onClose) {
+          onClose();
+        }
+        setIsModalVisible(false);
+      }
     }
   };
 
-  const modelOnCancel = () => {
+  const modelOnCancel = () => {           //点击取消隐藏Modal
     setIsModalVisible(false);
   };
 
   React.useEffect(() => {
     setIsModalVisible(editObject.isModalVisible);
-    if (editObject.id !== null) {
+    if (editObject.id !== null) {                     
       formObject.setFieldsValue({
-        userNo: editObject.userNo,
-        userName: editObject.userName,
+        appNo: editObject.appNo,
+        appName: editObject.appName,
         description: editObject.description,
-        sex: editObject.sex ? editObject.sex.code : null,
+        indexUrl: editObject.indexUrl,
       });
     }
   }, [editObject]);
 
-  const layout = {
+  const layout = {        //Form样式
     labelCol: { span: 8 },
-    wrapperCol: { span: 12 },
+    wrapperCol: { span: 12, offset: 0 },
   };
 
-  const flag = editObject.id !== null && editObject.id !== undefined;
+  const flag = editObject.id !== null && editObject.id !== undefined;//判断为修改还是添加
+
   return (
     <>
       <Modal
@@ -69,10 +87,10 @@ const UserEdit = (props: { editObject: UserEditObject; onClose: any }) => {
       >
         <Form {...layout} name="editForm" form={formObject} preserve={false}>
           <Form.Item
-            label="用户编号"
-            name="userNo"
+            label="应用编号"
+            name="appNo"
             rules={[
-              { required: true, whitespace: true, message: '用户编号不能为空!' },
+              { required: true, whitespace: true, message: '应用编号不能为空!' },
               { max: 30, message: '最大长度不能超过30!' },
             ]}
             style={{ marginBottom: 24 }}
@@ -80,10 +98,10 @@ const UserEdit = (props: { editObject: UserEditObject; onClose: any }) => {
             <Input placeholder="请输入"/>
           </Form.Item>
           <Form.Item
-            label="用户名称"
-            name="userName"
+            label="应用名称"
+            name="appName"
             rules={[
-              { required: true, whitespace: true, message: '用户名称不能为空!' },
+              { required: true, whitespace: true, message: '应用名称不能为空!' },
               { max: 30, message: '最大长度不能超过30!' },
             ]}
             style={{ marginBottom: 24 }}
@@ -91,18 +109,14 @@ const UserEdit = (props: { editObject: UserEditObject; onClose: any }) => {
             <Input placeholder="请输入"/>
           </Form.Item>
           <Form.Item
-            label="性别"
-            name="sex"
+            label="首页地址"
+            name="indexUrl"
             rules={[
-              { required: true, message: '性别不能为空!' },
+              { required: true, message: '首页地址不能为空!' },
             ]}
             style={{ marginBottom: 24 }}
           >
-            <Select>
-              <Option value="">请选择</Option>
-              <Option value="MALE">男性</Option>
-              <Option value="FEMAL">女性</Option>
-            </Select>
+            <Input placeholder="请输入"/>
           </Form.Item>
           <Form.Item
             label="描述"
@@ -121,4 +135,4 @@ const UserEdit = (props: { editObject: UserEditObject; onClose: any }) => {
   );
 };
 
-export { UserEdit, UserEditObject };
+export { AppEdit,  AppEditObject };

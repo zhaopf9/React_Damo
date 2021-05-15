@@ -25,6 +25,12 @@ const routes: Route[] =[
     { path: '/', 
     component: '@/layouts/index',
       routes: [
+                  {
+                    path: '/404',
+                    component: '@/pages/404',
+                    name: '404',
+                    key: '404',
+                  },
                   { path: '/',
                     component: '@/pages/index' 
                   },
@@ -52,53 +58,21 @@ const routes: Route[] =[
                   { 
                     path: '/userManager', 
                     component: '@/pages/userManager/index' ,
+                    
+                  },
+                  { 
+                    path: '/appManager', 
+                    component: '@/pages/appManager/index' ,
+                    
+                  },
+                  {
+                    path: '/500',
+                    component: '@/pages/500',
+                    name: '500',
+                    key: '500',
                   },
              ]
+
     },
 ]
-// const WEB_NAME = '统一认证系统';
-// const routes: Route[] = [
-//   {
-//     title: `${WEB_NAME}-文件未找到`,
-//     path: '/404',
-//     component: '@/pages/404',
-//     name: '404',
-//     key: '404',
-//   },
-//   {
-//     title: `${WEB_NAME}-系统简介`,
-//     path: '/about',
-//     component: '@/pages/about',
-//     name: '关于我们',
-//     key: 'about',
-//   },
-//   {
-//     path: '/',
-//     component: '@/layouts/index2',
-//     wrappers: ['@/pages/pageInterceptor'],
-//     routes: [
-//       {
-//         title: `${WEB_NAME}-首页`,
-//         path: '/',
-//         component: '@/pages/index',
-//         name: '首页',
-//         key: 'index',
-//       },
-//       {
-//         title: `${WEB_NAME}-用户管理`,
-//         path: '/userManager',
-//         component: '@/pages/userManager',
-//         name: '用户管理',
-//         key: 'userManager',
-//       },
-//       {
-//         title: `${WEB_NAME}-服务器异常`,
-//         path: '/500',
-//         component: '@/pages/500',
-//         name: '500',
-//         key: '500',
-//       },
-//     ],
-//   },
-// ];
 export default routes;
